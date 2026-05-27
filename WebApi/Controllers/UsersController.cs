@@ -117,8 +117,8 @@ namespace TCS.USER.WebApi.Controllers
 
                 _logger.LogInformation("Creating new user: {UserName}", userDTO.Name);
                 var createdUser = await _userService.CreateUserAsync(userDTO);
-
-                return CreatedAtAction("Creted succesfully", new { id = createdUser.Id }, createdUser);
+                return Created(); 
+                //return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
             }
             catch (ArgumentException ex)
             {
