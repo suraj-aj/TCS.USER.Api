@@ -17,35 +17,23 @@ namespace TCS.USER.Infrastructure.Repositories
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return await _context.Users.ToListAsync();
-            //return users.Select(MapToDTO).ToList();
         }
 
         public async Task<User?> GetUserByIdAsync(int id)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-           // return user != null ? MapToDTO(user) : null;
         }
 
-        public async Task<User> CreateUserAsync(User userDTO)
+        public async Task<User> CreateUserAsync(User user)
         {
-            var user = new User
-            {
-                Name = userDTO.Name,
-                Age = userDTO.Age,
-                City = userDTO.City,
-                State = userDTO.State,
-                Pincode = userDTO.Pincode,
-                CreatedAt = DateTime.UtcNow
-            };
-
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            userDTO.Id = user.Id;
-            userDTO.CreatedAt = user.CreatedAt;
-            userDTO.UpdatedAt = user.UpdatedAt;
+            user.Id = user.Id;
+            user.CreatedAt = user.CreatedAt;
+            user.UpdatedAt = user.UpdatedAt;
 
-            return userDTO;
+            return user;
         }
 
         
