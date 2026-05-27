@@ -49,36 +49,6 @@ namespace TCS.USER.Infrastructure.Repositories
             return userDTO;
         }
 
-        public async Task<UserDTO?> UpdateUserAsync(int id, UserDTO userDTO)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if (user == null)
-                return null;
-
-            user.Name = userDTO.Name;
-            user.Age = userDTO.Age;
-            user.City = userDTO.City;
-            user.State = userDTO.State;
-            user.Pincode = userDTO.Pincode;
-            user.UpdatedAt = DateTime.UtcNow;
-
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
-
-            return MapToDTO(user);
-        }
-
-        public async Task<bool> DeleteUserAsync(int id)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if (user == null)
-                return false;
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
         private static UserDTO MapToDTO(User user)
         {
             return new UserDTO

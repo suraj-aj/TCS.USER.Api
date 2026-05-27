@@ -118,7 +118,7 @@ namespace TCS.USER.WebApi.Controllers
                 _logger.LogInformation("Creating new user: {UserName}", userDTO.Name);
                 var createdUser = await _userService.CreateUserAsync(userDTO);
 
-                return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
+                return CreatedAtAction("Creted succesfully", new { id = createdUser.Id }, createdUser);
             }
             catch (ArgumentException ex)
             {
@@ -130,110 +130,6 @@ namespace TCS.USER.WebApi.Controllers
                 _logger.LogError(ex, "Error occurred while creating user");
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new { message = "An error occurred while creating the user", error = ex.Message });
-            }
-        }
-
-        /// <summary>
-        /// Update an existing user
-        /// </summary>
-        /// <param name="id">User ID</param>
-        /// <param name="userDTO">Updated user data</param>
-        /// <returns>Updated user</returns>
-        /// <response code="200">User updated successfully</response>
-        /// <response code="404">User not found</response>
-        /// <response code="400">Invalid user data or ID</response>
-        /// <response code="500">Internal server error</response>
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserDTO>> UpdateUser(int id, [FromBody] UserDTO userDTO)
-        {
-            try
-            {
-                if (id <= 0)
-                {
-                    _logger.LogWarning("Invalid user ID for update: {UserId}", id);
-                    return BadRequest(new { message = "User ID must be greater than 0" });
-                }
-
-                if (userDTO == null)
-                {
-                    _logger.LogWarning("Update user request with null data for ID: {UserId}", id);
-                    return BadRequest(new { message = "User data is required" });
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogWarning("Invalid user data provided for update");
-                    return BadRequest(ModelState);
-                }
-
-                _logger.LogInformation("Updating user with ID: {UserId}", id);
-                var updatedUser = await _userService.UpdateUserAsync(id, userDTO);
-
-                if (updatedUser == null)
-                {
-                    _logger.LogWarning("User not found for update with ID: {UserId}", id);
-                    return NotFound(new { message = $"User with ID {id} not found" });
-                }
-
-                return Ok(updatedUser);
-            }
-            catch (ArgumentException ex)
-            {
-                _logger.LogWarning(ex, "Validation error while updating user with ID: {UserId}", id);
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred while updating user with ID: {UserId}", id);
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { message = "An error occurred while updating the user", error = ex.Message });
-            }
-        }
-
-        /// <summary>
-        /// Delete a user
-        /// </summary>
-        /// <param name="id">User ID</param>
-        /// <returns>Deletion confirmation</returns>
-        /// <response code="200">User deleted successfully</response>
-        /// <response code="404">User not found</response>
-        /// <response code="400">Invalid user ID</response>
-        /// <response code="500">Internal server error</response>
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> DeleteUser(int id)
-        {
-            try
-            {
-                if (id <= 0)
-                {
-                    _logger.LogWarning("Invalid user ID for deletion: {UserId}", id);
-                    return BadRequest(new { message = "User ID must be greater than 0" });
-                }
-
-                _logger.LogInformation("Deleting user with ID: {UserId}", id);
-                var result = await _userService.DeleteUserAsync(id);
-
-                if (!result)
-                {
-                    _logger.LogWarning("User not found for deletion with ID: {UserId}", id);
-                    return NotFound(new { message = $"User with ID {id} not found" });
-                }
-
-                return Ok(new { message = $"User with ID {id} deleted successfully" });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred while deleting user with ID: {UserId}", id);
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { message = "An error occurred while deleting the user", error = ex.Message });
             }
         }
     }

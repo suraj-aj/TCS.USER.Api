@@ -35,27 +35,6 @@ namespace TCS.USER.Application.Services
             return await _userRepository.CreateUserAsync(userDTO);
         }
 
-        public async Task<UserDTO?> UpdateUserAsync(int id, UserDTO userDTO)
-        {
-            if (id <= 0)
-                throw new ArgumentException("User ID must be greater than 0", nameof(id));
-
-            if (userDTO == null)
-                throw new ArgumentNullException(nameof(userDTO));
-
-            ValidateUserDTO(userDTO);
-
-            return await _userRepository.UpdateUserAsync(id, userDTO);
-        }
-
-        public async Task<bool> DeleteUserAsync(int id)
-        {
-            if (id <= 0)
-                throw new ArgumentException("User ID must be greater than 0", nameof(id));
-
-            return await _userRepository.DeleteUserAsync(id);
-        }
-
         private static void ValidateUserDTO(UserDTO userDTO)
         {
             if (string.IsNullOrWhiteSpace(userDTO.Name) || userDTO.Name.Length < 2 || userDTO.Name.Length > 100)
