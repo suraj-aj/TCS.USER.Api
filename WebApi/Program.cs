@@ -8,7 +8,7 @@ using TCS.USER.Application.Services;
 using TCS.USER.Infrastructure.Repositories;
 using TCS.USER.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
-
+using TCS.USER.Infrastructure.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

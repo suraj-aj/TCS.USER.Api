@@ -1,8 +1,7 @@
-using TCS.USER.Application.DTOs;
-using TCS.USER.Application.Interfaces;
 using TCS.USER.Domain.Entities;
 using TCS.USER.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using TCS.USER.Infrastructure.Interfaces;
 
 namespace TCS.USER.Infrastructure.Repositories
 {
@@ -15,19 +14,19 @@ namespace TCS.USER.Infrastructure.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            var users = await _context.Users.ToListAsync();
-            return users.Select(MapToDTO).ToList();
+            return await _context.Users.ToListAsync();
+            //return users.Select(MapToDTO).ToList();
         }
 
-        public async Task<UserDTO?> GetUserByIdAsync(int id)
+        public async Task<User?> GetUserByIdAsync(int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-            return user != null ? MapToDTO(user) : null;
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+           // return user != null ? MapToDTO(user) : null;
         }
 
-        public async Task<UserDTO> CreateUserAsync(UserDTO userDTO)
+        public async Task<User> CreateUserAsync(User userDTO)
         {
             var user = new User
             {
@@ -49,19 +48,6 @@ namespace TCS.USER.Infrastructure.Repositories
             return userDTO;
         }
 
-        private static UserDTO MapToDTO(User user)
-        {
-            return new UserDTO
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Age = user.Age,
-                City = user.City,
-                State = user.State,
-                Pincode = user.Pincode,
-                CreatedAt = user.CreatedAt,
-                UpdatedAt = user.UpdatedAt
-            };
-        }
+        
     }
 }

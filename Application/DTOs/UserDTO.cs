@@ -26,9 +26,6 @@ namespace TCS.USER.Application.DTOs
         [StringLength(10, MinimumLength = 4, ErrorMessage = "Pincode must be between 4 and 10 characters")]
         public string Pincode { get; set; } = string.Empty;
 
-        [EmailAddress(ErrorMessage = "Email must be a valid email address")]
-        public string? Email { get; set; }
-
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
