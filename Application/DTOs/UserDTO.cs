@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TCS.USER.Application.DTOs
 {
     public class UserDTO
     {
+        [JsonIgnore]
         public int Id { get; set; }
 
         [Required]
